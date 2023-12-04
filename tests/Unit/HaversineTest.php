@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
 use App\Utilities\Haversine;
+use Tests\TestCase;
 
 class HaversineTest extends TestCase
 {
