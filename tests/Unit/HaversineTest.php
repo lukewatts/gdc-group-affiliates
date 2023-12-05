@@ -37,4 +37,41 @@ class HaversineTest extends TestCase
 
         $this->assertEquals(2886.44, $haversine->getDistance($other));
     }
+
+    /**
+     * @depends testGetDistance
+     */
+    public function testGetLatLonAtDistanceAndBearingReturnsCorrectStructure(): void
+    {
+        $haversine = new Haversine(53.3340285, -6.2535495);
+
+        $resultPoint = $haversine->getLatLonAtDistanceAndBearing(distance: 100, bearing: 180);
+
+        $this->assertIsObject($resultPoint);
+        $this->assertObjectHasProperty('latitude', $resultPoint);
+        $this->assertObjectHasProperty('longitude', $resultPoint);
+    }
+
+    /**
+     * @depends testGetLatLonAtDistanceAndBearingReturnsCorrectStructure
+     */
+    public function testGetLatLonAtDistanceAndBearingReturnsLatLonAtCorrectDistance(): void
+    {
+        $expected = (object) [
+            'latitude' => 52.434706894081,
+            'longitude' => -6.2535495,
+        ];
+
+        $haversine = new Haversine(53.3340285, -6.2535495);
+
+        // If the formula is correct, this should be the returned latitude and longitude point
+        $otherHaversine = new Haversine($expected->latitude, $expected->longitude);
+
+        $resultPoint = $haversine->getLatLonAtDistanceAndBearing(distance: 100, bearing: 180);
+
+        $this->assertEquals($expected->latitude, $resultPoint->latitude);
+        $this->assertEquals($expected->longitude, $resultPoint->longitude);
+
+        $this->assertEquals(100, $haversine->getDistance($otherHaversine));
+    }
 }

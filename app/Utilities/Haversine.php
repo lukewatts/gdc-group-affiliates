@@ -47,4 +47,27 @@ class Haversine
 
         return round($c * self::EARTH_RADIUS, 2);
     }
+
+    public function getLatLonAtDistanceAndBearing(int $distance, int $bearing): object
+    {
+        $bearing = deg2rad($bearing);
+
+        $latitude = deg2rad($this->latitude);
+        $longitude = deg2rad($this->longitude);
+
+        $otherLatitude = asin(
+            sin($latitude) * cos($distance / self::EARTH_RADIUS) +
+            cos($latitude) * sin($distance / self::EARTH_RADIUS) * cos($bearing)
+        );
+
+        $otherLongitude = $longitude + atan2(
+            sin($bearing) * sin($distance / self::EARTH_RADIUS) * cos($latitude),
+            cos($distance / self::EARTH_RADIUS) - sin($latitude) * sin($otherLatitude)
+        );
+
+        return (object) [
+            'latitude' => round(rad2deg($otherLatitude), 12),
+            'longitude' => round(rad2deg($otherLongitude), 12),
+        ];
+    }
 }

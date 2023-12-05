@@ -106,7 +106,7 @@ class Affiliates
             $sort_by = self::SORT_BY_AFFILIATE_ID;
         }
 
-        // Sort by attribute...
+        // Sort by attribute (affiliate_id || distance)...
         // https://www.php.net/manual/en/migration70.new-features.php#migration70.new-features.spaceship-op
         usort($affiliatesWithinDistance, function ($a, $b) use ($sort_by) {
             return $a->$sort_by <=> $b->$sort_by;
