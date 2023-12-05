@@ -2,12 +2,12 @@
 
 namespace App\Utilities;
 
-use App\Traits\HasDistance;
+use App\Traits\HasOrigin;
 use Illuminate\Support\Facades\Storage;
 
 class Affiliates
 {
-    use HasDistance;
+    use HasOrigin;
 
     const SORT_BY_AFFILIATE_ID = 'affiliate_id';
     const SORT_BY_DISTANCE = 'distance';
