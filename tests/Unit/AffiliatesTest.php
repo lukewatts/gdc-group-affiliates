@@ -119,7 +119,7 @@ class AffiliatesTest extends TestCase
         $this->assertCount(16, $affiliates);
     }
 
-    public static function dataProviderForWithinDistanceReturnsCorrectIdsInCorrectOrder(): array
+    public static function provideAffiliateIdAndIndex(): array
     {
         // $affiliate_id, $index
         return [
@@ -144,7 +144,7 @@ class AffiliatesTest extends TestCase
 
     /**
      * @depends testWithinDistanceReturnsCorrectCount
-     * @dataProvider dataProviderForWithinDistanceReturnsCorrectIdsInCorrectOrder
+     * @dataProvider provideAffiliateIdAndIndex
      */
     public function testWithinDistanceReturnsCorrectIdsInCorrectOrder($affiliate_id, $index): void
     {
