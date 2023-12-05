@@ -32,7 +32,11 @@ class Haversine
     }
 
     /**
-     * Get Distance
+     * Get Distance between two points
+     *
+     * @param Haversine $other
+     *
+     * @return float
      */
     public function getDistance(Haversine $other): float
     {
@@ -48,6 +52,14 @@ class Haversine
         return round($c * self::EARTH_RADIUS, 2);
     }
 
+    /**
+     * Get Latitude and Longitude at Distance and Bearing
+     *
+     * @param int $distance
+     * @param int $bearing
+     *
+     * @return object
+     */
     public function getLatLonAtDistanceAndBearing(int $distance, int $bearing): object
     {
         $bearing = deg2rad($bearing);
