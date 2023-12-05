@@ -52,25 +52,44 @@ class HaversineTest extends TestCase
         $this->assertObjectHasProperty('longitude', $resultPoint);
     }
 
+    public static function dataProviderGetLatLonAtDistanceAndBearingReturnsLatLonAtCorrectDistance(): array
+    {
+        // Distance, Bearing, Expected Lat/Lon
+        return [
+            [100, 180, (object) [
+                'latitude' => 52.434706894081,
+                'longitude' => -6.2535495,
+            ]],
+            [100, 0, (object) [
+                'latitude' => 54.233350105919,
+                'longitude' => -6.2535495,
+            ]],
+            [100, 90, (object) [
+                'latitude' => 53.3245490608,
+                'longitude' => -4.747746763273,
+            ]],
+            [100, 270, (object) [
+                'latitude' => 53.3245490608,
+                'longitude' => -7.759352236727,
+            ]],
+        ];
+    }
+
     /**
      * @depends testGetLatLonAtDistanceAndBearingReturnsCorrectStructure
+     * @dataProvider dataProviderGetLatLonAtDistanceAndBearingReturnsCorrectStructure
      */
-    public function testGetLatLonAtDistanceAndBearingReturnsLatLonAtCorrectDistance(): void
+    public function testGetLatLonAtDistanceAndBearingReturnsLatLonAtCorrectDistance(int $distance, int $bearing, $expectedPoint): void
     {
-        $expected = (object) [
-            'latitude' => 52.434706894081,
-            'longitude' => -6.2535495,
-        ];
-
         $haversine = new Haversine(53.3340285, -6.2535495);
 
         // If the formula is correct, this should be the returned latitude and longitude point
-        $otherHaversine = new Haversine($expected->latitude, $expected->longitude);
+        $otherHaversine = new Haversine($expectedPoint->latitude, $expectedPoint->longitude);
 
-        $resultPoint = $haversine->getLatLonAtDistanceAndBearing(distance: 100, bearing: 180);
+        $resultPoint = $haversine->getLatLonAtDistanceAndBearing($distance, $bearing);
 
-        $this->assertEquals($expected->latitude, $resultPoint->latitude);
-        $this->assertEquals($expected->longitude, $resultPoint->longitude);
+        $this->assertEquals($expectedPoint->latitude, $resultPoint->latitude);
+        $this->assertEquals($expectedPoint->longitude, $resultPoint->longitude);
 
         $this->assertEquals(100, $haversine->getDistance($otherHaversine));
     }
