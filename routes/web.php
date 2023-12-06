@@ -71,12 +71,6 @@ Route::get('/auth/callback', function () {
     return redirect()->intended('/dashboard');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
 Route::prefix('dashboard')->group(function () {
     Route::get('/list-affiliates', [AffiliatesController::class, 'create'])->name('dashboard.list-affiliates');
 })->middleware(['auth', 'verified']);
