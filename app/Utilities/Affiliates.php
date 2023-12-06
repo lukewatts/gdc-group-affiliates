@@ -74,7 +74,12 @@ class Affiliates
         $affiliates = (array) array_filter($affiliates);
 
         $this->affiliates =  array_map(function ($affiliate) {
-            return json_decode($affiliate);
+            $affiliateObject = json_decode($affiliate);
+
+            $affiliateObject->latitude = (float) $affiliateObject->latitude;
+            $affiliateObject->longitude = (float) $affiliateObject->longitude;
+
+            return $affiliateObject;
         }, $affiliates);
 
         return $this->affiliates;
@@ -96,6 +101,7 @@ class Affiliates
         foreach ($affiliates as $affiliate) {
             $affiliateHaversine = new Haversine($affiliate->latitude, $affiliate->longitude);
             $affiliate->distance = $originHaversine->getDistance($affiliateHaversine);
+
             if ($affiliate->distance <= $distance) {
                 $affiliatesWithinDistance[] = $affiliate;
             }
@@ -109,6 +115,10 @@ class Affiliates
         // Sort by attribute (affiliate_id || distance)...
         // https://www.php.net/manual/en/migration70.new-features.php#migration70.new-features.spaceship-op
         usort($affiliatesWithinDistance, function ($a, $b) use ($sort_by) {
+            if (!is_numeric($a->$sort_by) || !is_numeric($b->$sort_by)) {
+                throw new \InvalidArgumentException('Unhandled attribute value type. Value in attribute must be a number to sort.');
+            }
+
             return $a->$sort_by <=> $b->$sort_by;
         });
 
