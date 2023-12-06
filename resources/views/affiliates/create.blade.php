@@ -9,33 +9,28 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <ul>
-                        @foreach ($affiliates as $affiliate)
-                            <li class="flex flex-row max-w-[250px] justify-between">
-                                <span class="text-xl font-bold">ID:</span>
-                                <span class="text-lg">{{ $affiliate->affiliate_id }}</span>
-                            </li>
-                            <li class="flex flex-row max-w-[250px] justify-between">
-                                <span class="text-xl font-bold">Name:</span>
-                                <span class="text-lg">{{ $affiliate->name }}</span>
-                            </li>
-                            <li class="flex flex-row max-w-[250px] justify-between">
-                                <span class="text-xl font-bold">Latitude:</span>
-                                <span class="text-lg">{{ $affiliate->latitude }}</span>
-                            </li>
-                            <li class="flex flex-row max-w-[250px] justify-between">
-                                <span class="text-xl font-bold">Longitude:</span>
-                                <span class="text-lg">{{ $affiliate->longitude }}</span>
-                            </li>
-                            <li class="flex flex-row max-w-[250px] justify-between">
-                                <span class="text-xl font-bold">Distance:</span>
-                                <span class="text-lg">{{ $affiliate->distance }}</span>
-                            </li>
-                            @if (!$loop->last)
-                                <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-                            @endif
-                        @endforeach
-                    </ul>
+                    <table class="responsive-table">
+                        <thead class="bg-indigo-700 border-b">
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Distance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($affiliates as $affiliate)
+                                <tr>
+                                    <td data-title="ID">{{ $affiliate->affiliate_id }}</td>
+                                    <td data-title="Name">{{ $affiliate->name }}</td>
+                                    <td data-title="Latitude">{{ $affiliate->latitude }}</td>
+                                    <td data-title="Longitude">{{ $affiliate->longitude }}</td>
+                                    <td data-title="Distance">{{ $affiliate->distance }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
