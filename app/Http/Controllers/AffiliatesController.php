@@ -14,6 +14,8 @@ class AffiliatesController extends Controller
 
     /**
      * Display the affiliates create (list) view.
+     *
+     * @return View|RedirectResponse
      */
     public function create(): View|RedirectResponse
     {

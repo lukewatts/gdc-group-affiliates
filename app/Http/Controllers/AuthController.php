@@ -9,18 +9,30 @@ use Laravel\Socialite\Two\InvalidStateException;
 
 class AuthController extends Controller
 {
-    public function redirect() {
+    /**
+     * Redirect the user to GitHub for authentication.
+     *
+     * @return RedirectResponse
+     */
+    public function redirect(): RedirectResponse
+    {
         return Socialite::driver('github')->redirect();
     }
 
+    /**
+     * Handle the callback from GitHub.
+     *
+     * @return RedirectResponse
+     * @throws InvalidStateException
+     */
     public function callback(): RedirectResponse
     {
         if (auth()->check()) {
+            // Already logged in
             return redirect()->intended('/dashboard');
         }
 
         $user = Socialite::driver('github')->user();
-
         if (!$user) {
             throw new InvalidStateException('Unable to authenticate with GitHub.');
         }
@@ -40,6 +52,7 @@ class AuthController extends Controller
             return redirect()->intended('/dashboard');
         }
 
+        // User does not exist, create a new one
         $newUser = User::create([
             'name' => $user->getName(),
             'email' => $user->getEmail(),
